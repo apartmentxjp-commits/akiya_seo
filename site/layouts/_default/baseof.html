@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+    <link rel="stylesheet" href="{{ "css/style.css" | relURL }}">
+
+    <!-- OGP Tags -->
+    <meta property="og:title"
+        content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}">
+    <meta property="og:description"
+        content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+    <meta property="og:url" content="{{ .Permalink }}">
+    <meta property="og:site_name" content="{{ .Site.Title }}">
+    {{ with .Params.image }}
+    <meta property="og:image" content="{{ . | absURL }}">{{ end }}
+    <meta name="twitter:card" content="summary_large_image">
+    {{ if .Site.Params.googleAnalytics }}
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.googleAnalytics }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', '{{ .Site.Params.googleAnalytics }}');
+    </script>
+    {{ end }}
+</head>
+
+<body>
+    <header>
+        <div class="container header-inner">
+            <div class="site-brand">
+                <a href="{{ .Site.BaseURL | relURL }}" class="site-logo">
+                    <span class="logo-icon">🏠</span>
+                    <span class="logo-text">空き家バンク・古民家情報センター</span>
+                </a>
+            </div>
+            <nav class="header-nav">
+                <a href="{{ "post/" | relURL }}">記事一覧</a>
+                <a href="{{ .Site.BaseURL | relURL }}">地域別</a>
+            </nav>
+        </div>
+    </header>
+
+    {{ if .IsHome }}
+    {{ block "main" . }}{{ end }}
+    {{ else }}
+    <div class="layout-wrapper container">
+        <main>
+            {{ block "main" . }}{{ end }}
+        </main>
+
+        <aside>
+            <div class="sidebar-widget">
+                <h3>カテゴリ</h3>
+                <ul class="widget-list">
+                    <li><a href="{{ "post/" | relURL }}">🏠 空き家バンク</a></li>
+                    <li><a href="{{ "post/" | relURL }}">🏯 古民家リノベ</a></li>
+                    <li><a href="{{ "post/" | relURL }}">🌿 地方移住</a></li>
+                    <li><a href="{{ "post/" | relURL }}">🔨 DIYリフォーム</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3>最新の記事</h3>
+                <ul class="widget-list">
+                    {{ range first 5 (where .Site.RegularPages "Section" "post") }}
+                    <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
+                    {{ end }}
+                </ul>
+            </div>
+
+            <div class="sidebar-widget">
+                <h3>人気の地域</h3>
+                <ul class="widget-list">
+                    <li><a href="{{ "post/" | relURL }}">京都府</a></li>
+                    <li><a href="{{ "post/" | relURL }}">岐阜県（飛騨高山）</a></li>
+                    <li><a href="{{ "post/" | relURL }}">長野県</a></li>
+                    <li><a href="{{ "post/" | relURL }}">広島県（尾道）</a></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    {{ end }}
+
+    <footer>
+        <div class="container">
+            <p>&copy; {{ now.Format "2006" }} 空き家バンク・古民家情報センター</p>
+        </div>
+    </footer>
+</body>
+
+</html>

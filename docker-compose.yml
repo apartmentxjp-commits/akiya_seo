@@ -1,0 +1,110 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8081:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+      - BACKEND_URL=http://backend:8000
+    volumes:
+      - ./frontend:/app
+      - akiya_frontend_node_modules:/app/node_modules
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - SITE_URL=${SITE_URL:-http://localhost}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - ./backend:/app
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+  agent-scheduler:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: ["python", "scheduler.py"]
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - ARTICLE_GENERATION_INTERVAL_HOURS=${ARTICLE_GENERATION_INTERVAL_HOURS:-0.5}
+      - GH_TOKEN=${GH_TOKEN}
+      - GIT_USER_NAME=Akiya Bot
+      - GIT_USER_EMAIL=bot@akiya.local
+      - SITE_DIR=/mainproject/site
+      - PROJECT_DIR=/mainproject
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      backend:
+        condition: service_started
+    volumes:
+      - ./backend:/app
+      - /Users/Mrt0309/Desktop/akiya_seo:/mainproject:rw
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: akiya
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: akiya
+    volumes:
+      - akiya_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U akiya -d akiya"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - akiya_redis_data:/data
+    networks:
+      - akiya_net
+    restart: unless-stopped
+
+networks:
+  akiya_net:
+    driver: bridge
+
+volumes:
+  akiya_postgres_data:
+  akiya_redis_data:
+  akiya_frontend_node_modules:

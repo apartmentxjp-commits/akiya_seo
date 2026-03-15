@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+logs/
+*.log
+.DS_Store
+site/resources/_gen/
+.claude/
+.agents/
+node_modules/

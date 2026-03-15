@@ -1,0 +1,14 @@
+baseURL = "https://akiya.tacky-consulting.com/"
+languageCode = "ja"
+title = "空き家バンク・古民家情報センター"
+publishDir = "../docs"
+canonifyURLs = true
+
+[params]
+  description = "全国の空き家・古民家・地方移住情報。空き家バンク活用から古民家リノベーションまで、田舎暮らしを始めるための総合情報サイト"
+  googleAnalytics = ""
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

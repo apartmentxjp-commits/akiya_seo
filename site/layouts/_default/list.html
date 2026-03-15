@@ -1,0 +1,26 @@
+{{ define "main" }}
+<section class="post-list">
+    <div class="section-header">
+        <h1>記事一覧</h1>
+        <p>全国の空き家・古民家・地方移住に関する最新情報</p>
+    </div>
+
+    {{ range .Paginator.Pages }}
+    <a href="{{ .Permalink }}" class="post-card">
+        <div class="post-info">
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Summary | truncate 150 }}</p>
+        </div>
+    </a>
+    {{ end }}
+
+    <div class="pagination">
+        {{ if .Paginator.HasPrev }}
+        <a href="{{ .Paginator.Prev.URL }}" class="nav-link">&laquo; 前へ</a>
+        {{ end }}
+        {{ if .Paginator.HasNext }}
+        <a href="{{ .Paginator.Next.URL }}" class="nav-link">次へ &raquo;</a>
+        {{ end }}
+    </div>
+</section>
+{{ end }}

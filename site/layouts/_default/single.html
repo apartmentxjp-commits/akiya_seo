@@ -1,0 +1,33 @@
+{{ define "main" }}
+<article>
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ with .Params.area }}
+        <div class="article-meta">
+            <span class="meta-tag">📍 {{ . }}</span>
+            {{ with $.Params.prefecture }}<span class="meta-tag">🗾 {{ . }}</span>{{ end }}
+            {{ with $.Params.property_type }}<span class="meta-tag">🏠 {{ . }}</span>{{ end }}
+        </div>
+        {{ end }}
+    </header>
+
+    <div class="content">
+        {{ .Content | safeHTML }}
+    </div>
+
+    <div class="post-navigation">
+        {{ with .PrevInSection }}
+        <a href="{{ .Permalink }}" class="nav-link prev">
+            <span class="label">← 前の記事</span>
+            <span class="title">{{ .Title }}</span>
+        </a>
+        {{ end }}
+        {{ with .NextInSection }}
+        <a href="{{ .Permalink }}" class="nav-link next">
+            <span class="label">次の記事 →</span>
+            <span class="title">{{ .Title }}</span>
+        </a>
+        {{ end }}
+    </div>
+</article>
+{{ end }}

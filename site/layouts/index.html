@@ -1,0 +1,127 @@
+{{ define "main" }}
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h2>日本の空き家・古民家を、<br>次の暮らしへ。</h2>
+        <p>全国の空き家バンク情報、古民家リノベーション事例、地方移住支援制度をまとめてお届けします。</p>
+
+        <div class="hero-badges">
+            <span class="badge">🏠 空き家バンク</span>
+            <span class="badge">🏯 古民家リノベ</span>
+            <span class="badge">🌿 地方移住</span>
+            <span class="badge">💰 補助金情報</span>
+        </div>
+    </div>
+</section>
+
+<section class="category-hub container">
+    <div class="section-header">
+        <h2>カテゴリから探す</h2>
+        <p>あなたの目的に合わせた情報をご覧ください</p>
+    </div>
+    <div class="category-grid">
+        <a href="{{ "post/" | relURL }}" class="category-card">
+            <div class="cat-icon">🏠</div>
+            <div class="cat-content">
+                <h3>空き家バンク</h3>
+                <p>各地域の空き家バンク制度と活用事例</p>
+            </div>
+        </a>
+        <a href="{{ "post/" | relURL }}" class="category-card">
+            <div class="cat-icon">🏯</div>
+            <div class="cat-content">
+                <h3>古民家リノベ</h3>
+                <p>費用・実例・DIYからプロ施工まで</p>
+            </div>
+        </a>
+        <a href="{{ "post/" | relURL }}" class="category-card">
+            <div class="cat-icon">🌿</div>
+            <div class="cat-content">
+                <h3>地方移住</h3>
+                <p>移住支援金・補助金・体験談</p>
+            </div>
+        </a>
+        <a href="{{ "post/" | relURL }}" class="category-card">
+            <div class="cat-icon">🔨</div>
+            <div class="cat-content">
+                <h3>DIYリフォーム</h3>
+                <p>自分でできる修繕・改築のノウハウ</p>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="region-section container">
+    <div class="section-header">
+        <h2>地域から探す</h2>
+        <p>お探しの地域の空き家・古民家情報をご確認ください</p>
+    </div>
+    <div class="region-grid">
+        <div class="region-block">
+            <h3>🗾 北海道・東北</h3>
+            <div class="pref-tags">
+                <a href="{{ "post/" | relURL }}">北海道</a>
+                <a href="{{ "post/" | relURL }}">青森</a>
+                <a href="{{ "post/" | relURL }}">秋田</a>
+                <a href="{{ "post/" | relURL }}">岩手</a>
+                <a href="{{ "post/" | relURL }}">宮城</a>
+                <a href="{{ "post/" | relURL }}">山形</a>
+                <a href="{{ "post/" | relURL }}">福島</a>
+            </div>
+        </div>
+        <div class="region-block">
+            <h3>🗾 関東・甲信越</h3>
+            <div class="pref-tags">
+                <a href="{{ "post/" | relURL }}">東京</a>
+                <a href="{{ "post/" | relURL }}">千葉</a>
+                <a href="{{ "post/" | relURL }}">埼玉</a>
+                <a href="{{ "post/" | relURL }}">長野</a>
+                <a href="{{ "post/" | relURL }}">山梨</a>
+                <a href="{{ "post/" | relURL }}">新潟</a>
+            </div>
+        </div>
+        <div class="region-block">
+            <h3>🗾 関西・北陸</h3>
+            <div class="pref-tags">
+                <a href="{{ "post/" | relURL }}" class="highlight">京都</a>
+                <a href="{{ "post/" | relURL }}">奈良</a>
+                <a href="{{ "post/" | relURL }}">和歌山</a>
+                <a href="{{ "post/" | relURL }}">兵庫</a>
+                <a href="{{ "post/" | relURL }}">石川</a>
+                <a href="{{ "post/" | relURL }}">岐阜</a>
+            </div>
+        </div>
+        <div class="region-block">
+            <h3>🗾 中国・四国・九州</h3>
+            <div class="pref-tags">
+                <a href="{{ "post/" | relURL }}">広島</a>
+                <a href="{{ "post/" | relURL }}">島根</a>
+                <a href="{{ "post/" | relURL }}">高知</a>
+                <a href="{{ "post/" | relURL }}">大分</a>
+                <a href="{{ "post/" | relURL }}">熊本</a>
+                <a href="{{ "post/" | relURL }}">沖縄</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="latest-posts container">
+    <div class="section-header">
+        <h2>最新の情報記事</h2>
+        <p>空き家・古民家・地方移住に関する最新情報をお届けします</p>
+    </div>
+    <div class="post-grid">
+        {{ range first 6 (where .Site.RegularPages "Section" "post") }}
+        <a href="{{ .Permalink }}" class="post-card">
+            <div class="post-info">
+                <h3>{{ .Title }}</h3>
+                <p>{{ .Summary | truncate 100 }}</p>
+            </div>
+        </a>
+        {{ end }}
+    </div>
+    <div style="margin-top: 40px; text-align: center;">
+        <a href="{{ "post/" | relURL }}" class="btn-primary">すべての記事を見る →</a>
+    </div>
+</section>
+{{ end }}
