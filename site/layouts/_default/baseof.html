@@ -20,6 +20,21 @@
     {{ with .Params.image }}
     <meta property="og:image" content="{{ . | absURL }}">{{ end }}
     <meta name="twitter:card" content="summary_large_image">
+    <!-- Google Search Console 認証 -->
+    <meta name="google-site-verification" content="{{ .Site.Params.googleVerification }}" />
+    <!-- WebSite 構造化データ（ホームのみ） -->
+    {{ if .IsHome }}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ .Site.Title | jsonify }},
+      "url": {{ .Site.BaseURL | jsonify }},
+      "description": {{ .Site.Params.description | jsonify }},
+      "inLanguage": "ja"
+    }
+    </script>
+    {{ end }}
     {{ if .Site.Params.googleAnalytics }}
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.googleAnalytics }}"></script>
     <script>

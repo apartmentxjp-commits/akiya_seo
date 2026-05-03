@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://akiya.tacky-consulting.com/sitemap.xml
